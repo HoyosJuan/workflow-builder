@@ -1,0 +1,22 @@
+{
+  "name": "workflow-builder",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --p ./tsconfig-build.json && vite build"
+  },
+  "devDependencies": {
+    "@types/node": "20.12.7",
+    "typescript": "5.2.2",
+    "vite": "5.2.0",
+    "vite-plugin-dts": "3.7.3"
+  }
+}
