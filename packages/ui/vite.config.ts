@@ -4,7 +4,7 @@ import { defineConfig } from "vite"
 
 export default defineConfig({
   build: {
-    outDir: "dist",
+    outDir: "./dist",
     lib: {
       entry: path.resolve(__dirname, "./src"),
       formats: ["cjs", "es"],

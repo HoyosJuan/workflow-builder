@@ -1,18 +1,12 @@
 {
-  "name": "workflow-builder",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "files": [
-    "dist"
-  ],
-  "main": "dist/index.cjs",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "description": "A tiny package to build workflows.",
+  "author": "Juan Hoyos (https://github.com/HoyosJuan)",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc --p ./tsconfig-build.json && vite build"
+    "build-core": "npm run build -w @jayholes/workflow-builder"
   },
+  "workspaces": [
+    "./packages/*"
+  ],
   "devDependencies": {
     "@types/node": "20.12.7",
     "typescript": "5.2.2",
