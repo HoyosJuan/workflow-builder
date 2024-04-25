@@ -1,4 +1,4 @@
-import { Integration, IntegrationAction } from "./Integration"
+import { Integration, Action } from "./Integration"
 import { Workflow } from "./Workflow"
 import { Event } from "./Event"
 
@@ -10,7 +10,7 @@ export class Manager {
   private readonly _events: { [eventID: string]: Event<Record<string, any>> } = {}
   
   private get _actions() {
-    const actions: IntegrationAction[] = []
+    const actions: Action[] = []
     for (const id in this.integrations) {
       const integration = this.integrations[id]
       actions.push(...Object.values(integration.actions))
@@ -35,7 +35,7 @@ export class Manager {
     return this._registeredEvents[workflow.id] = event
   }
 
-  addIntegration(...integrations: Integration[]) {
+  addIntegration<T extends Integration>(...integrations: T[]) {
     for (const integration of integrations) {
       if (!(integration.id in this.integrations)) {
         this.integrations[integration.id] = integration

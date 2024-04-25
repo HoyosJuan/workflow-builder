@@ -22,13 +22,32 @@ export class Workflow {
   private _result: WorkflowResult[] = []
   private _currentStep = 0
 
+  /**
+   * The optional name of the workflow. This can be used to give the workflow a human-readable identifier.
+   */
   name?: string
+
+  /**
+   * The unique identifier for the workflow, automatically generated using the `crypto.randomUUID()` method unless something custom is set.
+   * This ensures that each workflow instance has a distinct ID for identification purposes.
+   */
   id: string = crypto.randomUUID()
+
   readonly triggerEvent: string
   readonly onWorkflowRun = new Event<WorkflowResult[]>()
 
   steps: WorkflowStep[] = []
 
+  /**
+   * Getter for the raw representation of the workflow.
+   * This method constructs and returns an object that represents the current state of the workflow,
+   * including its unique identifier, optional name, steps, and the event that triggers the workflow.
+   * This can be used to serialize the workflow in a JSON file.
+   * 
+   * @returns {RawWorkflow} An object conforming to the `RawWorkflow` interface, containing the workflow's
+   *                        current state, including its `id`, optional `name`, `steps`, and the `trigger`
+   *                        event name.
+   */
   get raw(): RawWorkflow {
     const workflow = {
       id: this.id,
@@ -100,7 +119,16 @@ export class Workflow {
     })
   }
 
-  async run(data?: Record<string, any>): Promise<WorkflowResult[]> { // Data is from the trigger event
+  /**
+   * Executes the workflow processing each step sequentially until completion.
+   * This method handles the execution flow of the workflow steps, including initializing the workflow result
+   * with the trigger event data, running each step, and triggering the `onWorkflowRun` event upon completion.
+   * 
+   * @param data Optional data object from the trigger event that can be used in the workflow's first step.
+   *             This data is passed as the output of the "trigger event" step.
+   * @returns A promise that resolves with an array of `WorkflowResult` objects, representing the output of each step in the workflow.
+   */
+  async run(data?: Record<string, any>): Promise<WorkflowResult[]> {
     if (this._currentStep === 0) {
       this._result.push( { step: this.triggerEvent, output: data?? {} } )
     }
@@ -117,6 +145,16 @@ export class Workflow {
     return this.run(data)
   }
 
+  /**
+   * Initializes the workflow instance with data from a `RawWorkflow` object.
+   * This method is used to set the workflow's properties such as `id`, `name`, and `steps`
+   * based on the provided raw workflow data. It's useful for reconstructing a workflow
+   * from a serialized or stored state.
+   * 
+   * @param data - An object conforming to the `RawWorkflow` interface, containing the necessary
+   *               information to initialize the workflow, including its unique identifier,
+   *               an optional name, and the sequence of steps that comprise the workflow.
+   */
   fromJSON(data: RawWorkflow) {
     const { id, name, steps } = data
     this.id = id

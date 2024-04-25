@@ -1,17 +1,15 @@
-export interface IntegrationAction{
+export interface Action {
   id: string
   name?: string
   enabled: boolean
   run: (data: any) => Promise<any>
 }
 
-export abstract class Integration {
-  readonly abstract id: string
+export interface Integration {
+  id: string
   name?: string
-  abstract config?: Record<string, any>
-  abstract actions: { [key: string]: IntegrationAction }
-
-  throwMissingConfiguration(missingKey?: string) {
-    throw new Error(`Integration: ${missingKey ? `"${missingKey}"` : ""} configuration is missing in integration "${this.name || this.id}".`)
+  config?: Record<string, any>
+  actions: {
+    [name: string]: Action
   }
-} 
+}

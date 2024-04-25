@@ -2,6 +2,7 @@
   "description": "A tiny package to build workflows.",
   "author": "Juan Hoyos (https://github.com/HoyosJuan)",
   "scripts": {
+    "dev": "vite",
     "build-core": "npm run build -w @jayholes/workflow-builder"
   },
   "workspaces": [
